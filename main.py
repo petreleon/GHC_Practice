@@ -1,31 +1,67 @@
-from __future__ import print_function
-from ortools.algorithms import pywrapknapsack_solver
+# Python 3 program to find subarray having
+# maximum sum less than or equal to sum
+
+# To find subarray with maximum sum
+# less than or equal to sum
+
+def findMaxSubarraySum(arr, n, sum):
+    # To store current sum and
+    # max sum of subarrays
+    curr_sum = arr[0]
+    max_sum = 0
+    start = 0;
+
+    # To find max_sum less than sum
+    for i in range(1, n):
+
+        # Update max_sum if it becomes
+        # greater than curr_sum
+        if (curr_sum <= sum):
+            max_sum = max(max_sum, curr_sum)
+
+        # If curr_sum becomes greater than sum
+        # subtract starting elements of array
+        while (curr_sum + arr[i] > sum and start < i):
+            curr_sum -= arr[start]
+            start += 1
+
+        # Add elements to curr_sum
+        curr_sum += arr[i]
+
+    # Adding an extra check for last subarray
+    if (curr_sum <= sum):
+        max_sum = max(max_sum, curr_sum)
+
+    return max_sum
+
+
+def subset_sum(numbers, target, partial=[]):
+    s = sum(partial)
+
+    # check if the partial sum is equals to target
+    if s == target:
+        print("sum(%s)=%s" % (partial, target))
+    if s >= target:
+        return  # if we reach the number why bother to continue
+
+    for i in range(len(numbers)):
+        n = numbers[i]
+        remaining = numbers[i+1:]
+        subset_sum(remaining, target, partial + [n])
+
+
+# This code is contributed by
+# Surendra_Gangwar
 
 
 def main():
     # Create the solver.
-    solver = pywrapknapsack_solver.KnapsackSolver(
-        pywrapknapsack_solver.KnapsackSolver.
-            KNAPSACK_DYNAMIC_PROGRAMMING_SOLVER,
-        'test')
     file_input = open("c_medium.in", "r")
     lines = file_input.read().splitlines()
     setup_values = list(map(int, lines[0].split()))
     pizzas = list(map(int, lines[1].split()))
-
-    weights = [pizzas]
-    capacities = [setup_values[0]]
-    values = weights[0]
-    solver.Init(values, weights, capacities)
-    computed_value = solver.Solve()
-
-    packed_items = [x for x in range(0, len(weights[0]))
-                    if solver.BestSolutionContains(x)]
-    packed_weights = [weights[0][i] for i in packed_items]
-
-    print("Packed items: ", packed_items)
-    print("Packed weights: ", packed_weights)
-    print("Total weight (same as total value): ", computed_value)
+    capacities = setup_values[0]
+    print(findMaxSubarraySum(pizzas, setup_values[1], capacities))
 
 
 if __name__ == '__main__':
