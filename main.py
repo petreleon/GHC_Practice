@@ -66,6 +66,11 @@ def main():
     setup_values = list(map(int, lines[0].split()))
     pizzas = list(map(int, lines[1].split()))
     capacities = setup_values[0]
+    value_to_index = {}
+
+    for index in range(len(pizzas)):
+        value_to_index[pizzas[index]] = value_to_index.get(pizzas[index], []) + [index]
+
     print(findMaxSubarraySum(pizzas, setup_values[1], capacities))
     now = time.time()
 
