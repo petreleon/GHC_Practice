@@ -5,7 +5,7 @@
 # less than or equal to sum
 import time
 
-
+# buggy function
 def findMaxSubarraySum(arr, n, sum):
     # To store current sum and
     # max sum of subarrays
@@ -63,6 +63,8 @@ def main():
     # Create the solver.
     file_input = open("e_also_big.in", "r")
     lines = file_input.read().splitlines()
+    file_input.close()
+
     setup_values = list(map(int, lines[0].split()))
     pizzas = list(map(int, lines[1].split()))
     capacities = setup_values[0]
@@ -74,11 +76,23 @@ def main():
     print(findMaxSubarraySum(pizzas, setup_values[1], capacities))
     now = time.time()
 
-    print(sum(one_subset_sum(findMaxSubarraySum(pizzas, setup_values[1], capacities), pizzas)))
+    list_of_values = one_subset_sum(findMaxSubarraySum(pizzas, setup_values[1], capacities), pizzas)
+    #list_of_values = one_subset_sum(16, pizzas)
+    list_of_values.reverse()
+    list_of_indexes = []
+    for value in list_of_values:
+        list_of_indexes.append(value_to_index[value][0])
+        value_to_index[value] = value_to_index[value][1:]
 
+    print(list_of_indexes)
     later = time.time()
     difference = int(later - now)
     print("Time: "+str(difference))
+
+    second_line = " ".join(list(map(str, list_of_indexes)))
+    file_output = open("output5.txt", "w")
+    file_output.write(str(len(list_of_indexes)) + "\n" + second_line)
+    file_output.close()
 
 
 if __name__ == '__main__':
