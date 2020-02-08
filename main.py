@@ -4,38 +4,7 @@
 # To find subarray with maximum sum
 # less than or equal to sum
 import time
-
-# buggy function
-def findMaxSubarraySum(arr, n, sum):
-    # To store current sum and
-    # max sum of subarrays
-    curr_sum = arr[0]
-    max_sum = 0
-    start = 0
-
-    # To find max_sum less than sum
-    for i in range(1, n):
-
-        # Update max_sum if it becomes
-        # greater than curr_sum
-        if (curr_sum <= sum):
-            max_sum = max(max_sum, curr_sum)
-
-        # If curr_sum becomes greater than sum
-        # subtract starting elements of array
-        while (curr_sum + arr[i] > sum and start < i):
-            curr_sum -= arr[start]
-            start += 1
-
-        # Add elements to curr_sum
-        curr_sum += arr[i]
-
-    # Adding an extra check for last subarray
-    if (curr_sum <= sum):
-        max_sum = max(max_sum, curr_sum)
-
-    return max_sum
-
+import copy
 
 def one_subset_sum(sum_val: int, set_ints: list):
     test_subset = []
@@ -60,8 +29,9 @@ def one_subset_sum(sum_val: int, set_ints: list):
 
 
 def main():
+    name_of_file = "d_quite_big"
     # Create the solver.
-    file_input = open("e_also_big.in", "r")
+    file_input = open(name_of_file + ".in", "r")
     lines = file_input.read().splitlines()
     file_input.close()
 
@@ -73,11 +43,15 @@ def main():
     for index in range(len(pizzas)):
         value_to_index[pizzas[index]] = value_to_index.get(pizzas[index], []) + [index]
 
-    print(findMaxSubarraySum(pizzas, setup_values[1], capacities))
     now = time.time()
 
-    list_of_values = one_subset_sum(findMaxSubarraySum(pizzas, setup_values[1], capacities), pizzas)
-    #list_of_values = one_subset_sum(16, pizzas)
+    #list_of_values = one_subset_sum(findMaxSubarraySum(pizzas, setup_values[1], capacities), pizzas)
+    while True:
+        list_of_values = one_subset_sum(capacities, pizzas.copy())
+        if len(list_of_values) > 0:
+            break
+        capacities -= 1
+        print(capacities)
     list_of_values.reverse()
     list_of_indexes = []
     for value in list_of_values:
@@ -90,7 +64,7 @@ def main():
     print("Time: "+str(difference))
 
     second_line = " ".join(list(map(str, list_of_indexes)))
-    file_output = open("output5.txt", "w")
+    file_output = open(name_of_file + ".out", "w")
     file_output.write(str(len(list_of_indexes)) + "\n" + second_line)
     file_output.close()
 
