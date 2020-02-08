@@ -37,26 +37,6 @@ def findMaxSubarraySum(arr, n, sum):
     return max_sum
 
 
-found = False
-
-
-def subset_sum(numbers, target, partial=[]):
-    global found
-    s = sum(partial)
-
-    # check if the partial sum is equals to target
-    if s == target:
-        print("sum(%s)=%s" % (partial, target))
-        raise Exception('element found')
-    if s >= target:
-        return  # if we reach the number why bother to continue
-
-    for i in range(len(numbers)):
-        n = numbers[i]
-        remaining = numbers[i + 1:]
-        subset_sum(remaining, target, partial + [n])
-
-
 def one_subset_sum(sum_val: int, set_ints: list):
     test_subset = []
     filtered_ints = list(filter(lambda x: x <= sum_val, set_ints))
