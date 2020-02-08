@@ -9,7 +9,7 @@ def findMaxSubarraySum(arr, n, sum):
     # max sum of subarrays
     curr_sum = arr[0]
     max_sum = 0
-    start = 0;
+    start = 0
 
     # To find max_sum less than sum
     for i in range(1, n):
@@ -35,14 +35,22 @@ def findMaxSubarraySum(arr, n, sum):
     return max_sum
 
 
+found = False
+
+
 def subset_sum(numbers, target, partial=[]):
+    global found
     s = sum(partial)
 
     # check if the partial sum is equals to target
     if s == target:
+        found = True
         print("sum(%s)=%s" % (partial, target))
     if s >= target:
         return  # if we reach the number why bother to continue
+
+    if found:
+        return
 
     for i in range(len(numbers)):
         n = numbers[i]
@@ -62,6 +70,7 @@ def main():
     pizzas = list(map(int, lines[1].split()))
     capacities = setup_values[0]
     print(findMaxSubarraySum(pizzas, setup_values[1], capacities))
+    subset_sum(pizzas, findMaxSubarraySum(pizzas, setup_values[1], capacities))
 
 
 if __name__ == '__main__':
